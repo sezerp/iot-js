@@ -1,0 +1,14 @@
+{
+  "name": "robiotic-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pawel Zabczynski",
+  "license": "ISC",
+  "dependencies": {
+    "jsforce": "^1.9.1"
+  }
+}
