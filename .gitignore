@@ -3,6 +3,11 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+#devlopment envirnoment
+
+/devenv/*
+
 # Logs
 logs
 *.log

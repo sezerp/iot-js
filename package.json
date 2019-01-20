@@ -4,11 +4,27 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "dev": "nodemon ./bin/server.js",
+    "configure-dev": "npm run configure && npm run dev",
+    "configure": "bash ./bin/configure_db.sh"
   },
   "author": "Pawel Zabczynski",
   "license": "ISC",
   "dependencies": {
-    "jsforce": "^1.9.1"
+    "base-64": "^0.1.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.4",
+    "jsforce": "^1.9.1",
+    "pg": "^7.7.1",
+    "redis": "^2.8.0",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }
