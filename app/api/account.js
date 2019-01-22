@@ -1,19 +1,42 @@
 const { Router } = require('express');
-const redisPool = require('../../redisPool');
-const uuid = require('uuid');
+
+const AccountTable = require('../account/table');
+
 const router = Router();
 
-
-router.post('/create/v1', (req, res, next) => {
+router.post('/v1', (req, res, next) => {
     const { accountName, address } = req.body;
-
-    res.json({ message: { accountName, address } });
+    AccountTable.storeAccount({ accountName, address })
+    .then((id) => {
+        if (id) {
+            res.json( { id })
+        } else {
+            const error = new Error('Internal Server error');
+            error.statusCode = 500;
+            throw error;
+        }
+    })
+    .catch(e => next(e));
 });
 
-router.post('/update/v1', (req, res, next) => {
+router.get('/v1', (req, res, next) => {
+    const { accountId } = req.query;
+    AccountTable.getAccount({ accountId })
+    .then((account) => {
+        if (account) {
+            res.json( { account })
+        } else {
+            const error = new Error('Not found any ');
+            error.statusCode = 404;
+            throw error;
+        }
+    })
+    .catch(e => next(e));
+});
+
+router.put('/v1', (req, res, next) => {
     // const { accountName, address } = req.body;
     res.json({ "operation": 'done' });
 });
-
 
 module.exports = router;

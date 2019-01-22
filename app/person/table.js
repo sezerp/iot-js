@@ -1,12 +1,13 @@
 const pool = require('../../databasePool');
+const session = require('./session');
 
 class PersonTable {
-  static storeAccount({ usernameHash, passwordHash }) {
+  static storePerson({ usernameHash, passwordHash, accountId, isAdmin }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO person("usernameHash", "passwordHash")
-         VALUES($1, $2, $3)`,
-        [usernameHash, passwordHash, STARTING_BALANCE],
+        `INSERT INTO person("usernameHash", "passwordHash", "accountId", "isAdmin")
+         VALUES($1, $2, $3, $4)`,
+        [usernameHash, passwordHash, accountId, isAdmin],
         (error, response) => {
           if (error) return reject(error);
 
@@ -19,13 +20,13 @@ class PersonTable {
   static getPerson({ usernameHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT id, "passwordHash", "sessionId", balance FROM account
+        `SELECT id, "passwordHash", "sessionId" FROM person
          WHERE "usernameHash" = $1`,
         [usernameHash],
         (error, response) => {
           if (error) return reject(error);
 
-          resolve({ account: response.rows[0] });
+          resolve({ person: response.rows[0] });
         }
       )
     });
@@ -36,20 +37,6 @@ class PersonTable {
       pool.query(
         'UPDATE account SET "sessionId" = $1 WHERE "usernameHash" = $2',
         [sessionId, usernameHash],
-        (error, response) => {
-          if (error) return reject(error);
-
-          resolve();
-        }
-      )
-    });
-  }
-
-  static updateBalance({ accountId, value }) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        'UPDATE account SET balance = balance + $1 WHERE id = $2',
-        [value, accountId],
         (error, response) => {
           if (error) return reject(error);
 
