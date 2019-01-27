@@ -5,6 +5,11 @@ const AccountTable = require('../account/table');
 const router = Router()
 
 
+router.post('/v1', (req, res, next) => {
+    const {  }
+    AccountTable.getAccount()
+});
+
 // router.post('/v1', (req, res, next) => {
 //     const { accountName, address } = req.body;
 //     AccountTable.storeAccount({ accountName, address })
