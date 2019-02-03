@@ -6,7 +6,7 @@ const router = Router()
 
 
 router.post('/v1', (req, res, next) => {
-    const {  }
+    // const {  }
     AccountTable.getAccount()
 });
 

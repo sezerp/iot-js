@@ -35,7 +35,7 @@ class PersonTable {
   static updateSessionId({ sessionId, usernameHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        'UPDATE account SET "sessionId" = $1 WHERE "usernameHash" = $2',
+        'UPDATE person SET "sessionId" = $1 WHERE "usernameHash" = $2',
         [sessionId, usernameHash],
         (error, response) => {
           if (error) return reject(error);

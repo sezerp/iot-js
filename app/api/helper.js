@@ -1,6 +1,6 @@
 const Session = require('../person/session');
-const AccountTable = require('../account/table');
-const { hash } = require('../account/helper');
+const PersonTable = require('../person/table')
+const { hash } = require('../person/helper');
 
 const setSession = ({ username, res, sessionId }) => {
   return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ const setSession = ({ username, res, sessionId }) => {
       session = new Session({ username });
       sessionString = session.toString();
 
-      AccountTable.updateSessionId({
+      PersonTable.updateSessionId({
         sessionId: session.id,
         usernameHash: hash(username)
       })
@@ -38,7 +38,7 @@ const setSessionCookie = ({ sessionString, res }) => {
   });
 };
 
-const authenticatedAccount = ({ sessionString }) => {
+const authenticated = ({ sessionString }) => {
   return new Promise((resolve, reject) => {
     if (!sessionString || !Session.verify(sessionString)) {
       const error = new Error('Invalid session');
@@ -49,7 +49,7 @@ const authenticatedAccount = ({ sessionString }) => {
     } else {
       const { username, id } = Session.parse(sessionString);
   
-      AccountTable.getAccount({ usernameHash: hash(username) })
+      PersonTable.getPerson({ usernameHash: hash(username) })
         .then(({ account }) => {
           const authenticated = account.sessionId === id;
   
@@ -60,4 +60,4 @@ const authenticatedAccount = ({ sessionString }) => {
   });
 };
 
-module.exports = { setSession, authenticatedAccount };
+module.exports = { setSession, authenticated };
