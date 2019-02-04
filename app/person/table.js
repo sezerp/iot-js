@@ -20,7 +20,7 @@ class PersonTable {
   static getPerson({ usernameHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT id, "passwordHash", "sessionId" FROM person
+        `SELECT id, "passwordHash", "sessionId", "accountId" FROM person
          WHERE "usernameHash" = $1`,
         [usernameHash],
         (error, response) => {

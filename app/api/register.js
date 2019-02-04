@@ -9,7 +9,6 @@ router.post('/v1', (req, res, next) => {
     const { accountName, username, password } = req.body;
     RegisterAccount.storeAccount({ accountName, username, password })
     .then((v) => {
-        console.log(v);
         return setSession({ username, res })
     })
     .then(({ message }) => res.json({ message }))
