@@ -1,44 +1,32 @@
 const { Router } = require('express');
-
-const AccountTable = require('../account/table'); 
-
+const PersonTable = require('../person/table'); 
+const { hash } = require('../person/helper')
+const { setSession, authenticated } = require('./helper')
 const router = Router()
 
 
 router.post('/v1', (req, res, next) => {
-    // const {  }
-    AccountTable.getAccount()
+    const { username, password } = req.body;
+    const usernameHash = hash( username )
+    PersonTable.getPerson({ usernameHash })
+    .then( ({ person }) => {
+        if ( person && person.passwordHash === hash(password)) {
+            return setSession( {  username, res } )
+        } else {
+            const error = new Error('Incorrect username/password');
+            error.statusCode = 409;
+            throw error;
+        }
+    })
+    .then(( { message }) => res.json({ message }))
+    .catch( e => next(e));
 });
 
-// router.post('/v1', (req, res, next) => {
-//     const { accountName, address } = req.body;
-//     AccountTable.storeAccount({ accountName, address })
-//     .then((id) => {
-//         if (id) {
-//             res.json( { id })
-//         } else {
-//             const error = new Error('Internal Server error');
-//             error.statusCode = 500;
-//             throw error;
-//         }
-//     })
-//     .catch(e => next(e));
-// });
-
-// router.get('/v1', (req, res, next) => {
-//     const { accountId } = req.body;
-//     AccountTable.getAccount({ accountId })
-//     .then((account) => {
-//         if (account) {
-//             res.json( { account })
-//         } else {
-//             const error = new Error('Not found any ');
-//             error.statusCode = 404;
-//             throw error;
-//         }
-//     })
-//     .catch(e => next(e));
-// });
-
+router.post('/authenticated/v1', (req, res, next) => {
+    const sessionString = req.cookies.sessionString;
+    authenticated({ sessionString })
+    .then(({ authenticated  }) => res.json({ authenticated }))
+    .catch(e => next(e));
+});
 
 module.exports = router;

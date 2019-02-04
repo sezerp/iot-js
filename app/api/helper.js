@@ -42,18 +42,15 @@ const authenticated = ({ sessionString }) => {
   return new Promise((resolve, reject) => {
     if (!sessionString || !Session.verify(sessionString)) {
       const error = new Error('Invalid session');
-  
       error.statusCode = 400;
-  
       return reject(error);
     } else {
       const { username, id } = Session.parse(sessionString);
-  
       PersonTable.getPerson({ usernameHash: hash(username) })
-        .then(({ account }) => {
-          const authenticated = account.sessionId === id;
+        .then(({ person }) => {
+          const authenticated = person.sessionId === id;
   
-          resolve({ account, authenticated, username });
+          resolve({ person, authenticated, username });
         })
         .catch(error => reject(error));
     }
