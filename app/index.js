@@ -7,6 +7,7 @@ const deviceRouter = require('./api/device');
 const accountRouter = require('./api/account');
 const loginRouter = require('./api/login');
 const registerRouter = require('./api/register');
+const templateRouter = require('./api/template');
 
 const app = express();
 // 
@@ -18,6 +19,7 @@ app.use('/device', deviceRouter);
 app.use('/account', accountRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/template', templateRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

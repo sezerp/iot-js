@@ -1,5 +1,4 @@
 const pool = require('../../databasePool');
-const session = require('./session');
 
 class PersonTable {
   static storePerson({ usernameHash, passwordHash, accountId, isAdmin }) {
@@ -25,7 +24,6 @@ class PersonTable {
         [usernameHash],
         (error, response) => {
           if (error) return reject(error);
-
           resolve({ person: response.rows[0] });
         }
       )
@@ -39,7 +37,6 @@ class PersonTable {
         [sessionId, usernameHash],
         (error, response) => {
           if (error) return reject(error);
-
           resolve();
         }
       )
