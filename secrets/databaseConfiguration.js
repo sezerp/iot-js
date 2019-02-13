@@ -1,4 +1,3 @@
-
 module.exports = {
     user: 'docker',
     host: '127.0.0.1',

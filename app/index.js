@@ -23,7 +23,8 @@ app.use('/template', templateRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
-  
+    console.error(err.message);
+    if (err.statusCode === 500 ) err.message = 'Internal server error.';
     res.status(statusCode).json({
       type: 'error', message: err.message
     })

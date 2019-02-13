@@ -5,12 +5,12 @@ class PersonTable {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO person("usernameHash", "passwordHash", "accountId", "isAdmin")
-         VALUES($1, $2, $3, $4)`,
+         VALUES($1, $2, $3, $4) RETURNING id`,
         [usernameHash, passwordHash, accountId, isAdmin],
         (error, response) => {
           if (error) return reject(error);
-
-          resolve();
+          const personId = response.rows[0].id;
+          resolve({ personId });
         }
       );
     });

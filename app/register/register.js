@@ -14,28 +14,28 @@ class RegisterAccount {
                     .then(( { accountId } ) => {
                         const isAdmin = true;
                         PersonTable.storePerson({ usernameHash, passwordHash, accountId, isAdmin })
-                        .then(() => {
-                            resolve()
+                        .then(({ personId }) => {
+                            resolve({ personId })
                         })
-                        .catch(e => reject(e));
+                        .catch(error => reject(error));
                     })
-                    .catch(e => reject(e));
+                    .catch(error => reject(error));
                 } else {
                     const error = new Error('Provided username already exist');
                     error.statusCode = 409;
                     reject(error);
                 }
             })
-            .catch(error => next(error));
+            .catch(error => reject(error));
         });
     }
 
     static isPersonExist({ usernameHash }) {
         return new Promise((resolve, reject) => {
             PersonTable.getPerson( { usernameHash } )
-            .then(({ person }) => resolve({ isExist: person != undefined }));
+            .then(({ person }) => resolve({ isExist: person != undefined }))
+            .catch(error => reject(error));
         })
-        .catch(e => reject(e));
     }
 }
 

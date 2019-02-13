@@ -4,7 +4,6 @@ const { hash } = require('../person/helper')
 const { setSession, authenticated } = require('./helper')
 const router = Router()
 
-
 router.post('/v1', (req, res, next) => {
     const { username, password } = req.body;
     const usernameHash = hash( username )
@@ -14,7 +13,7 @@ router.post('/v1', (req, res, next) => {
             return setSession( {  username, res } )
         } else {
             const error = new Error('Incorrect username/password');
-            error.statusCode = 409;
+            error.statusCode = 401;
             throw error;
         }
     })
